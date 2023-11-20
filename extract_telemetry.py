@@ -1,10 +1,13 @@
-# Reference Credit: https://codereview.stackexchange.com/questions/237653/print-numbers-from-video-frames-to-console-using-pytesseract
+# https://codereview.stackexchange.com/questions/237653/print-numbers-from-video-frames-to-console-using-pytesseract
 
 import pytesseract
 import cv2
 
 # Video URL
-EXTRACT_VIDEO = cv2.VideoCapture("oft2_full.mp4")
+VIDEO_NAME = "ift2.mp4"
+EXTRACT_VIDEO = cv2.VideoCapture(VIDEO_NAME)
+FRAME_COUNT = EXTRACT_VIDEO.get(cv2.CAP_PROP_FRAME_COUNT)
+FPS = EXTRACT_VIDEO.get(cv2.CAP_PROP_FPS)
 READING, IMG = EXTRACT_VIDEO.read()
 
 # Tesseract location
@@ -17,7 +20,7 @@ STOP_FRAME = 1050
 FRAMERATE = 1
 
 # Output File
-outfile = open("data.csv", "w")
+outfile = open((VIDEO_NAME+".csv"), "w")
 outfile.write("Booster_Speed, Ship_Speed, Booster_Altitude, Ship_Altitude, T_Plus, Frame\n")
 
 while READING:
@@ -31,7 +34,7 @@ while READING:
     if (CURR_FRAME % FRAMERATE != 0):
         continue
     
-    print(CURR_FRAME)
+    print(str(CURR_FRAME) + "/" + str(FRAME_COUNT))
 
     EXTRACT_VIDEO.set(1, CURR_FRAME)
     READING, IMG = EXTRACT_VIDEO.read()
